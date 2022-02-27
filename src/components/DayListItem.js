@@ -4,11 +4,14 @@ import "./DayListItem.scss"
 
 export default function DayListItem(props) {
 
-  const numOfSpots = (spots) => {
+  const formatSpots = (spots) => {
     if (spots === 0) {
-      return "no sports remaining"
+      return "no spots remaining"
     }
-    return `${spots} spots remining`;
+    if (spots === 1) {
+      return `${spots} spot remaining`
+    }
+    return `${spots} spots remaining`;
   }
 
   let dayListItemClass = classNames({
@@ -21,9 +24,9 @@ export default function DayListItem(props) {
 
 
   return (
-    <li onClick={() => props.setDay(props.name)} >
+    <li onClick={() => props.setDay(props.name)} className={dayListItemClass} >
       <h2 className="text--regular">{props.name}</h2>
-      <h3 className="text--light">{numOfSpots(props.spots)}</h3>
+      <h3 className="text--light">{formatSpots(props.spots)}</h3>
     </li>
   );
 }
