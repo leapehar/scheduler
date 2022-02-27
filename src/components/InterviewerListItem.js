@@ -16,7 +16,7 @@ export default function DayListItem(props) {
 
 
   return (
-    <li className={interviewItemClasses} key={props.id} onClick={props.setInterviewer}>
+    <li className={interviewItemClasses} onClick={props.setInterviewer}>
       <img
         className={imageClasses}
         src={props.avatar}
@@ -24,7 +24,7 @@ export default function DayListItem(props) {
       />
 
       {/* if selected, render the picture and name, else no name */}
-      {props.selected ? props.name : ""}
+      {props.selected && props.name}
     </li>
   )
 }
