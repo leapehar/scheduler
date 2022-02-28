@@ -32,9 +32,13 @@ export default function Application(props) {
         <img className=" schedule " src="images/logo.png "></img>
         <nav className="sidebar__menu">
           <DayList
+            // days={days}
+            // day={day}
+            // setDay={setDay}
+
             days={days}
-            day={day}
-            setDay={setDay}
+            value={day}
+            onChange={setDay}
           />
         </nav>
         <img className="sidebar__lhl sidebar--centered"
