@@ -57,7 +57,7 @@ export default function Application(props) {
 
       // console.log(first, second, third);
     })
-  }, [])
+  }, [props.interviewers])
 
   //const setDays = (days) => setState(prev => ({...prev, days}));
 
