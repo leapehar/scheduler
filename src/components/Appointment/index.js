@@ -9,6 +9,7 @@ import Form from "./Form";
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
+const SAVE = "SAVE";
 
 
 export default function Appointment(props) {
@@ -17,10 +18,20 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
 
+  function save(name, interviewer) {
+    const interview = {
+      student: name,
+      interviewer
+    };
+
+    transition(SAVE);
+
+    props.bookInterview(props.id, interview);
+    transition(SHOW);
+  }
   // come back later to fix interviewer bug
 
   // let appointmentInfo = props.interview ? <Show student={props.interview.student} /> : <Empty />
-
 
 
 
@@ -40,14 +51,11 @@ export default function Appointment(props) {
             interviewer={props.interview.interviewer}
           />
         )}
-        {mode === CREATE && <Form interviewers={[]} onCancel={() => back()} />}
+        {mode === CREATE && <Form interviewers={[]} onCancel={() => back()} onSave={() => save()} />}
 
       </article>
-
     </Fragment>
-
-
-
-
   )
 }
+// *** We'll also need to add a new constant and update our Appointment component to show the Status component when mode === SAVING.
+
