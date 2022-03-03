@@ -5,7 +5,7 @@ import "components/Application.scss";
 import DayList from "./DayList";
 import "components/Application";
 import Appointment from "components/Appointment";
-import {getAppointmentsForDay} from "helpers/selectors";
+import {getAppointmentsForDay, getInterview} from "helpers/selectors";
 
 
 
@@ -77,20 +77,43 @@ export default function Application(props) {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
-    appointments: {}
+    appointments: {},
+    interviewers: {}
 
   })
 
-  // const dailyAppointments = [];
 
-
-  // causing error, fix later
-  //setState(prev => ({...prev, days}));
 
 
   const setDay = (day) => setState({...state, day});
-  const dailyAppointments = getAppointmentsForDay(state, state.day)
+  const dailyAppointments = getAppointmentsForDay(state, state.day);
+  const schedule = dailyAppointments.map((appointment) => {
+    const interview = getInterview(state, appointment.interview);
 
+    return (
+      <Appointment
+        key={appointment.id}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
+      />
+    );
+  });
+
+  // const appointments = getAppointmentsForDay(state, day);
+
+  // const schedule = appointments.map((appointment) => {
+  //   const interview = getInterview(state, appointment.interview);
+
+  //   return (
+  //     <Appointment
+  //       key={appointment.id}
+  //       id={appointment.id}
+  //       time={appointment.time}
+  //       interview={interview}
+  //     />
+  //   );
+  // });
 
   useEffect(() => {
 
@@ -103,7 +126,7 @@ export default function Application(props) {
     ]).then((all) => {
       const [first, second, third] = all;
 
-      setState(prev => ({...prev, days: first.data, appointments: second.data}))
+      setState(prev => ({...prev, days: first.data, appointments: second.data, interviewers: third.data}))
 
 
 
@@ -136,7 +159,8 @@ export default function Application(props) {
 
       </section>
       <section className="schedule">
-        {dailyAppointments.map(appointment => <Appointment key={appointment.id} {...appointment} />)}
+        {schedule}
+
         <Appointment key="last" time="5pm" />
       </section>
     </main>

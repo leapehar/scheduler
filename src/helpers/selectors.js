@@ -23,8 +23,17 @@ export function getAppointmentsForDay(state, day) {
 
   return array;
 
+}
+
+export function getInterview(state, interview) {
 
 
+  if (!interview) {
+    return null;
+  }
 
+  const theInterviewer = interview.interviewer;
+  const interviewerInfo = state.interviewers[theInterviewer];
 
+  return {...interview, interviewer: interviewerInfo};
 }
