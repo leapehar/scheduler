@@ -13,7 +13,6 @@ const SAVE = "SAVE";
 
 
 export default function Appointment(props) {
-
   const {mode, transition, back} = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
@@ -26,8 +25,7 @@ export default function Appointment(props) {
 
     transition(SAVE);
 
-    props.bookInterview(props.id, interview);
-    transition(SHOW);
+    props.bookInterview(props.id, interview).then(() => transition(SHOW));
   }
   // come back later to fix interviewer bug
 
@@ -42,8 +40,6 @@ export default function Appointment(props) {
         <Header time={props.time}>
         </Header>
         {/*appointmentInfo*/}
-
-
         {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
         {mode === SHOW && (
           <Show
@@ -51,11 +47,10 @@ export default function Appointment(props) {
             interviewer={props.interview.interviewer}
           />
         )}
-        {mode === CREATE && <Form interviewers={[]} onCancel={() => back()} onSave={() => save()} />}
+        {mode === CREATE && <Form interviewers={[]} onCancel={() => back()} onSave={save} />}
 
       </article>
     </Fragment>
   )
 }
 // *** We'll also need to add a new constant and update our Appointment component to show the Status component when mode === SAVING.
-
