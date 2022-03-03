@@ -3,7 +3,7 @@ import React from 'react';
 import classNames from "classnames";
 import "./InterviewerListItem.scss"
 
-export default function DayListItem(props) {
+export default function InterviewerListItem(props) {
 
   //css styles for interview item
   let interviewItemClasses = classNames(

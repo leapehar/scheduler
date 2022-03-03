@@ -45,5 +45,5 @@ export function getInterviewersForDay(state, searchedDay) {
   if (state.days.length === 0 || found === undefined) {
     return [];
   }
-  return found.appointments.map(id => state.appointments[id]);
+  return found.interviewers.map(id => state.interviewers[id]);
 }

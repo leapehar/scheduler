@@ -5,11 +5,16 @@ import Show from "./Show"
 import Empty from "./Empty"
 import useVisualMode from "hooks/useVisualMode";
 import Form from "./Form";
+import {action} from '@storybook/addon-actions';
+import Status from './Status';
+import Confirm from "./Confirm";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
 const SAVE = "SAVE";
+const DELETE = "DELETE";
+const CONFIRM = "CONFIRM";
 
 
 export default function Appointment(props) {
@@ -31,6 +36,18 @@ export default function Appointment(props) {
 
   // let appointmentInfo = props.interview ? <Show student={props.interview.student} /> : <Empty />
 
+  function onDelete() {
+    transition(CONFIRM);
+  };
+
+  function onConfirm() {
+    transition(DELETE);
+    props.cancelInterview(props.id)
+      .then(() => {
+        transition(EMPTY);
+      })
+
+  }
 
 
   return (
@@ -39,18 +56,21 @@ export default function Appointment(props) {
       <article className="appointment">
         <Header time={props.time}>
         </Header>
-        {/*appointmentInfo*/}
+
         {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
         {mode === SHOW && (
           <Show
-            student={props.interview.student}
-            interviewer={props.interview.interviewer}
+            student={props.interview && props.interview.student}
+            interviewer={props.interview && props.interview.interviewer}
+            onDelete={onDelete}
           />
         )}
-        {mode === CREATE && <Form interviewers={[]} onCancel={() => back()} onSave={save} />}
+        {mode === CREATE && <Form interviewers={props.interviewers} onCancel={() => back()} onSave={save} />}
+        {mode === SAVE && <Status message="Saving" />}
+        {mode === CONFIRM && <Confirm message=" delete?" onCancel={back} onConfirm={onConfirm} />}
+        {mode === DELETE && <Status message="Deleting" />}
 
       </article>
     </Fragment>
   )
 }
-// *** We'll also need to add a new constant and update our Appointment component to show the Status component when mode === SAVING.
