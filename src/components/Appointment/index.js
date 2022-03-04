@@ -8,6 +8,7 @@ import Form from "./Form";
 import {action} from '@storybook/addon-actions';
 import Status from './Status';
 import Confirm from "./Confirm";
+import Error from "./Error";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
@@ -16,6 +17,8 @@ const SAVE = "SAVE";
 const DELETE = "DELETE";
 const CONFIRM = "CONFIRM";
 const EDIT = 'EDIT';
+const ERROR_SAVE = "ERROR_SAVE";
+const ERROR_DELETE = "ERROR_DELETE";
 
 
 export default function Appointment(props) {
@@ -31,7 +34,11 @@ export default function Appointment(props) {
 
     transition(SAVE);
 
-    props.bookInterview(props.id, interview).then(() => transition(SHOW));
+    props
+      .bookInterview(props.id, interview)
+      .then(() => transition(SHOW))
+      .catch(error => transition(ERROR_SAVE, true));
+
   }
   // come back later to fix interviewer bug
 
@@ -42,12 +49,14 @@ export default function Appointment(props) {
   };
 
   function onConfirm() {
-    transition(DELETE);
+    transition(DELETE, true);
     props.cancelInterview(props.id)
       .then(() => {
         transition(EMPTY);
       })
-
+      .catch(() => {
+        transition(ERROR_DELETE, true)
+      })
   }
 
   function onEdit() {
@@ -76,6 +85,8 @@ export default function Appointment(props) {
         {mode === CONFIRM && <Confirm message=" Are you sure you would like to delete?" onCancel={back} onConfirm={onConfirm} />}
         {mode === DELETE && <Status message="Deleting" />}
         {mode === EDIT && <Form student={props.interview && props.interview.student} interviewer={props.interview && props.interview.interviewer} interviewers={props.interviewers} onCancel={() => back()} onSave={save} />}
+        {mode === ERROR_SAVE && <Error message="Error: could not save" onClose={back} />}
+        {mode === ERROR_DELETE && <Error message="Error: could not delete appointment" onClose={back} />}
 
       </article>
     </Fragment>
