@@ -11,6 +11,20 @@ export default function useApplicationData() {
 
   })
 
+  function spotsRemainingOnSave(appointment, id) {
+    if (state.appointments[id].interview === null && appointment.interview !== null) {
+      const selectedDay = state.days.find(day => day.name === state.day);
+      selectedDay.spots--;
+    }
+  }
+
+  function spotsRemainingOnDelete(appointment, id) {
+    if (state.appointments[id].interview !== null && appointment.interview === null) {
+      const selectedDay = state.days.find(day => day.name === state.day);
+      selectedDay.spots++;
+    }
+  }
+
   //booking interview
   const bookInterview = (id, interview) => {
     console.log(id, interview);
@@ -24,12 +38,12 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
-
-    return axios.put(`/api/appointments/${id}`, {interview})
+    spotsRemainingOnSave(appointment, id)
+    return axios.put(`/api/appointments/${id}`, appointment)
       .then((response) => {
         return setState({...state, appointments});
       })
-      .catch(error => console.log(error));
+    // .catch(error => console.log(error));
   }
 
   const cancelInterview = (id) => {
@@ -43,11 +57,15 @@ export default function useApplicationData() {
       [id]: appointment
     };
 
-    return axios.delete(`/api/appointments/${id}`)
+    spotsRemainingOnDelete(appointment, id)
+    return axios.delete(`/api/appointments/${id}`, appointment)
       .then(() => {
         setState({...state, appointments: appointments});
       })
-      .catch(error => console.log(error.message))
+      .catch(error => {
+        console.log(error.message)
+        throw Error(error);
+      })
 
   }
 

@@ -6,6 +6,7 @@ export default function From(props) {
 
   const [student, setStudent] = useState(props.student || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
+  const [errorMessage, setErrorMessage] = useState();
 
   const reset = () => {
     setStudent("")
@@ -15,6 +16,20 @@ export default function From(props) {
   const cancel = () => {
     reset();
     props.onCancel();
+  }
+
+  const validate = () => {
+    if (student === "" || student === null) {
+      setErrorMessage("Student name cannot be empty");
+      return;
+    }
+
+    if (interviewer === null) {
+      setErrorMessage("You must choose an interviewer");
+      return;
+    }
+    props.onSave(student, interviewer);
+
   }
 
   return (
@@ -35,6 +50,7 @@ export default function From(props) {
             your code goes here
           */
           />
+          {errorMessage}
         </form>
         <InterviewerList
           /* your code goes here */
@@ -51,7 +67,8 @@ export default function From(props) {
 
           }} >Cancel</Button>
           <Button confirm onClick={() => {
-            props.onSave(student, interviewer)
+
+            validate(student, interviewer)
           }}>Save</Button>
         </section>
       </section>
