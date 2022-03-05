@@ -45,6 +45,7 @@ export default function From(props) {
 
             value={student}
             onChange={(event) => {setStudent(event.target.value)}}
+            data-testid="student-name-input"
           /*
             This must be a controlled component
             your code goes here
