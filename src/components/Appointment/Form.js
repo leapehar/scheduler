@@ -51,8 +51,10 @@ export default function From(props) {
             your code goes here
           */
           />
-          {errorMessage}
+
         </form>
+        <section className="appointment__validation">{errorMessage}</section>
+
         <InterviewerList
           /* your code goes here */
           interviewers={props.interviewers}
