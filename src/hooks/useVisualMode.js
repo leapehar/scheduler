@@ -11,8 +11,13 @@ export default function useVisualMode(initial) {
 
   function transition(newMode, replace = false) {
     if (replace) {
-      history.pop();
-      setHistory([...history, newMode])
+      // history.pop();
+      // setHistory([...history, newMode])
+
+      let newHistory = [...history];
+      newHistory.pop();
+      setHistory([...newHistory, newMode])
+
 
     }
     setMode(newMode)
@@ -23,10 +28,17 @@ export default function useVisualMode(initial) {
   function back() {
 
     if (history.length > 1) {
-      history.pop();
-      const length = history.length - 1;
+      // history.pop();
+      // const length = history.length - 1;
 
-      setMode(history[length]);
+      let newHistory = [...history];
+      newHistory.pop();
+
+      const length = newHistory.length - 1;
+
+      // setMode(history[length]);
+
+      setMode(newHistory[length]);
     }
   };
   return {mode, transition, back};
