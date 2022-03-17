@@ -39,3 +39,9 @@ react-dom
 react-test-renderer
 
 axios
+
+## Screenshots
+
+!["Image 1"](https://github.com/leapehar/scheduler/blob/master/docs/img2.png?raw=true)
+!["Image 2"](https://github.com/leapehar/scheduler/blob/master/docs/img1.png?raw=true)
+!["Image 3"](https://github.com/leapehar/scheduler/blob/master/docs/img3.png?raw=true)
