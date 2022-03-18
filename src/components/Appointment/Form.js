@@ -20,7 +20,7 @@ export default function From(props) {
 
   const validate = () => {
     if (student === "" || student === null) {
-      setErrorMessage("Student name cannot be empty");
+      setErrorMessage("Student name cannot be blank");
       return;
     }
 
